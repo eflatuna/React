@@ -5,7 +5,10 @@ const DisplaySSS = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	/* flex-direction: column; */
+
+	@media screen and (max-width: ${({ theme }) => theme.resposivemd}) {
+		flex-direction: column;
+	}
 `;
 
 export default DisplaySSS;
