@@ -1,38 +1,47 @@
-import React from "react";
+import React, { useContext } from "react";
+import { RecipeContext } from "../../context/RecipeProvider";
 import {
-  Button,
-  FoodInput,
-  FormContainer,
-  HeaderContainer,
-  MainHeader,
-  Select,
+	Button,
+	FoodInput,
+	FormContainer,
+	HeaderContainer,
+	MainHeader,
+	Select,
 } from "./HeaderStyles";
 
 const Header = () => {
+	const { setQuery, setMealType, getData } = useContext(RecipeContext);
 
-  return (
-    <HeaderContainer>
-      <MainHeader>FOOD APP</MainHeader>
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		getData();
+	};
 
-      <FormContainer >
-        <FoodInput
-          type="text"
-          placeholder="Search"
-        />
+	return (
+		<HeaderContainer>
+			<MainHeader>FOOD APP</MainHeader>
 
-        <Button type="submit">Search</Button>
+			<FormContainer onSubmit={handleSubmit}>
+				<FoodInput
+					type="text"
+					placeholder="Search"
+					onChange={(e) => setQuery(e.target.value)}
+				/>
 
-        <Select
-          name="ogunTypes"
-          id="ogunTypes"
-        >
-          <option>Breakfast</option>
-          <option>Lunch</option>
-          <option>TeaTime</option>
-        </Select>
-      </FormContainer>
-    </HeaderContainer>
-  );
+				<Button type="submit">Search</Button>
+
+				<Select
+					name="ogunTypes"
+					id="ogunTypes"
+					onChange={(e) => setMealType(e.target.value)}
+				>
+					<option value="Breakfast">Breakfast</option>
+					<option value="Lunch">Lunch</option>
+					<option value="TeaTime">TeaTime</option>
+				</Select>
+			</FormContainer>
+		</HeaderContainer>
+	);
 };
 
 export default Header;

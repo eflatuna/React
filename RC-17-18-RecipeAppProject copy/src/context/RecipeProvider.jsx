@@ -1,4 +1,6 @@
 import React, { createContext, useState } from "react";
+import axios from "axios";
+import { useEffect } from "react";
 
 //!context alanı create ettik
 export const RecipeContext = createContext();
@@ -20,6 +22,12 @@ const RecipeProvider = ({ children }) => {
 
 	const url = `https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}&mealType=${mealType}`;
 
+	const getData = async () => {
+		const { data } = await axios.get(url);
+		console.log(data.hits);
+		setRecipes(data.hits);
+	};
+
 	return (
 		<RecipeContext.Provider
 			value={{
@@ -30,6 +38,7 @@ const RecipeProvider = ({ children }) => {
 				setQuery,
 				setMealType,
 				recipes,
+				getData,
 			}}
 		>
 			{children}

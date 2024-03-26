@@ -1,29 +1,29 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
-  Button,
-  Cards,
-  MainContainer,
-  RecipeHeader,
-  RecipeImage,
+	Button,
+	Cards,
+	MainContainer,
+	RecipeHeader,
+	RecipeImage,
 } from "./HomeStyles";
-
+import { RecipeContext } from "../../context/RecipeProvider";
 
 const RecipeCard = () => {
+	const { recipes } = useContext(RecipeContext);
+	console.log(recipes[0].recipe);
 
-  return (
-    <MainContainer>
-      {[].map((a) => (
-        <Cards >
-          <RecipeHeader> </RecipeHeader>
+	return (
+		<MainContainer>
+			{recipes.map((a) => (
+				<Cards key={a.recipe.id}>
+					<RecipeHeader>{a.recipe.label} </RecipeHeader>
 
-          <RecipeImage src={a.recipe.image} />
-          <Button >
-            Details
-          </Button>
-        </Cards>
-      ))}
-    </MainContainer>
-  );
+					<RecipeImage src={a.recipe.image} />
+					<Button>Details</Button>
+				</Cards>
+			))}
+		</MainContainer>
+	);
 };
 
 export default RecipeCard;
