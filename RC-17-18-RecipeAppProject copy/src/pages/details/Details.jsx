@@ -8,8 +8,9 @@ import {
 	OtherPart,
 } from "./DetailsStyles";
 import dietsvg from "../../assets/diet.svg";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 const Details = () => {
+	const navigate = useNavigate();
 	const {
 		state: { recipe },
 	} = useLocation();
@@ -17,7 +18,12 @@ const Details = () => {
 		<DetailContainer>
 			<HeaderContainer>
 				<h1>{recipe.label}</h1>
-				<img alt={dietsvg} />
+				<img
+					style={{ cursor: "pointer" }}
+					src={dietsvg}
+					alt=""
+					onClick={() => navigate("-1")}
+				/>
 			</HeaderContainer>
 
 			<DetailPart>
@@ -62,7 +68,15 @@ const Details = () => {
 					<img src={recipe.image} alt="" />
 				</ImgContainer>
 
-				<IngredContainer></IngredContainer>
+				<IngredContainer>
+					{recipe.ingredientLines.map((item, index) => (
+						<div key={index}>
+							<p>
+								{index + 1} * {item}
+							</p>
+						</div>
+					))}
+				</IngredContainer>
 			</DetailPart>
 		</DetailContainer>
 	);
