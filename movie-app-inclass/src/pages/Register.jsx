@@ -3,7 +3,7 @@ import GoogleIcon from "../assets/icons/GoogleIcon";
 import { useAuthContext } from "../context/AuthContext";
 
 const Register = () => {
-	const { register } = useAuthContext();
+	const { register, signGoogleProvider } = useAuthContext();
 	//* ayrı stateler
 	// const [email,setEmail] = useState("")
 	// const [password,setPassword] = useState("")

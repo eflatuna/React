@@ -1,13 +1,15 @@
 import React from "react";
-import Register from "./pages/Register";
 import AppRouter from "./router/AppRouter";
 import AuthContextProvider from "./context/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
 	return (
 		<div>
 			<AuthContextProvider>
 				<AppRouter />
+				<ToastContainer />
 			</AuthContextProvider>
 		</div>
 	);

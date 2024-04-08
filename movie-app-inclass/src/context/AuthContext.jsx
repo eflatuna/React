@@ -1,13 +1,16 @@
 import {
+	GoogleAuthProvider,
 	createUserWithEmailAndPassword,
 	onAuthStateChanged,
 	signInWithEmailAndPassword,
+	signInWithPopup,
 	signOut,
 	updateProfile,
 } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../auth/firebase";
 import { useNavigate } from "react-router-dom";
+import { toastSuccessNotify } from "../helpers/toastNotify";
 
 //! create context
 const AuthContext = createContext();
@@ -19,18 +22,22 @@ const AuthContextProvider = ({ children }) => {
 	const navigate = useNavigate();
 
 	const register = async (email, password, displayName) => {
-		//? yeni bir kullanıcı oluşturmak için kullanılan firebase metodu
-		const userCredential = await createUserWithEmailAndPassword(
-			auth,
-			email,
-			password
-		);
-		//? kullanıcı profilini güncellemek için kullanılan firebase metodu
-		await updateProfile(auth.currentUser, {
-			displayName: displayName,
-		});
-		navigate("/");
-		console.log(userCredential);
+		try {
+			//? yeni bir kullanıcı oluşturmak için kullanılan firebase metodu
+			const userCredential = await createUserWithEmailAndPassword(
+				auth,
+				email,
+				password
+			);
+		} catch (error) {
+			//? kullanıcı profilini güncellemek için kullanılan firebase metodu
+			await updateProfile(auth.currentUser, {
+				displayName: displayName,
+			});
+			navigate("/");
+			toastSuccessNotify("Logged in!");
+			// console.log(userCredential);
+		}
 	};
 	//* https://console.firebase.google.com/
 	//* => Authentication => sign-in-method => enable Email/password
@@ -42,6 +49,16 @@ const AuthContextProvider = ({ children }) => {
 	const logout = () => {
 		//*https://firebase.google.com/docs/auth/web/password-auth#next_steps
 		signOut(auth); //! sadece signOut metodunu çağırmamız yeterli
+	};
+
+	const signGoogleProvider = async () => {
+		try {
+			const provider = new GoogleAuthProvider();
+			await signInWithPopup(auth, provider);
+			navigate("/");
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const userObserver = () => {
@@ -68,7 +85,9 @@ const AuthContextProvider = ({ children }) => {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ currentUser, register, login, logout }}>
+		<AuthContext.Provider
+			value={{ currentUser, register, login, logout, signGoogleProvider }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);
