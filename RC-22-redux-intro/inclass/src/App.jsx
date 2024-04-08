@@ -1,17 +1,20 @@
+import { Provider } from "react-redux";
 import "./App.css";
 import Counter from "./components/counter/Counter";
 import ErrorBoundary from "./components/ErrorBoundary";
-import Todo from "./components/todo/Todo";
+import { store } from "./store/store";
 
 function App() {
-  return (
-    <div className="app">
-      <ErrorBoundary>
-      <Counter />
-      <Todo />
-      </ErrorBoundary>
-    </div>
-  );
+	return (
+		<div className="app">
+			<Provider store={store}>
+				<ErrorBoundary>
+					<Counter />
+					{/* <Todo /> */}
+				</ErrorBoundary>
+			</Provider>
+		</div>
+	);
 }
 
 export default App;
